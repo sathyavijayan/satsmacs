@@ -1,0 +1,13 @@
+auto-save-list/
+
+packages/
+org/
+elpa/
+melpa/
+melpa-stable/
+
+url/
+transient/
+bm-repository
+projectile-bookmarks.eld
+.save/
