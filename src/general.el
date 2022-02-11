@@ -244,3 +244,47 @@
 ;; ztree install (directory diff)
 ;;
 (use-package ztree)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                   ----==| S P E L L - C H E C K |==----                    ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;
+;; Apparently this is part of Emacs default so no need to install it.
+;;
+(setq ispell-program-name "aspell"      ; use aspell instead of ispell
+      ispell-extra-args '("--sug-mode=ultra"))
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+(flyspell-mode +1)
+
+(use-package flycheck
+  :init
+  (setq flycheck-temp-prefix (expand-file-name "flycheck" temporary-file-directory))
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
+
+;; FIXME - Helm dev has stalled - Haven't made a decision on whether I
+;; should move away from it, yet. Im not ready to give up some of the
+;; features yet. I will try Ivy, Counsel, Swiper for other features
+;; for a bit.
+;;
+;; https://news.ycombinator.com/item?id=24449883
+;; https://github.com/emacs-helm/helm/issues/2386
+;;
+(use-package helm
+  :init (helm-mode 1)
+  :bind (("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-buffers-list)))
+
+(use-package helm-descbinds
+  :init (helm-descbinds-mode 1))
+
+(use-package which-key
+  :init (which-key-mode))
+
+(key-chord-define-global "FF" 'projectile-find-file)
+(key-chord-define-global "PP" 'projectile-switch-project)

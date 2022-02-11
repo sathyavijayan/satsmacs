@@ -1,4 +1,3 @@
-
 (setq satsmacs/default-font "Victor Mono")
 (setq satsmacs/default-font-size 160)
 
@@ -18,7 +17,7 @@
 (set-face-attribute 'default nil
         :font   satsmacs/default-font
         :height satsmacs/default-font-size
-	:weight 'bold)
+        :weight 'bold)
 
 ;; modeline indicators
 (line-number-mode t)
@@ -28,9 +27,14 @@
 ;;
 ;; better modeline
 ;;
+
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  :custom ((doom-modeline-height 10)))
+
+(doom-modeline-def-modeline 'main
+  '(bar workspace-name window-number modals matches buffer-info remote-host buffer-position word-count parrot selection-info)
+  '(vcs objed-state misc-info persp-name battery grip irc mu4e gnus github debug lsp minor-modes input-method indent-info buffer-encoding major-mode process " "))
 
 ;;
 ;; Load default theme
@@ -54,4 +58,3 @@
 
 (use-package flucui-themes
   :init (setup-flucui-theme))
-

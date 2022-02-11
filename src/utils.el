@@ -1,0 +1,6 @@
+(defun satsmacs/show-window (buffer-name)
+  (interactive)
+  (let (old-buf (current-buffer))
+    (when (get-buffer buffer-name)
+      (pop-to-buffer buffer-name nil nil)
+      (switch-to-buffer-other-window old-buf))))

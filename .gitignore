@@ -11,3 +11,6 @@ transient/
 bm-repository
 projectile-bookmarks.eld
 .save/
+/.lsp-session-v1
+/forge-database.sqlite
+/*.cache

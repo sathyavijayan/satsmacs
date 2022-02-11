@@ -61,10 +61,13 @@
 
 (load    "default-config.el")    ;; Load user preferences
 (load-if "custom-config.el")     ;; load custom configuration if present
-(load    "general.el")           ;; general settings
-(load    "theme.el")            ;; visual aspects
-(load    "dev-tools.el")            ;; visual aspects
-;; (load  "editor.el")         ;; editor settings
+(load    "utils.el")             ;; utils
+(load    "general.el"  )         ;; general settings
+(load    "theme.el")             ;; visual aspects
+(load    "editor.el")            ;; editor settings
+(load    "dev-tools.el")         ;; generic dev tools that apply to
+                                 ;; all languages/platforms.
+(load    "clojure.el")           ;; Clojure ! Yeah !
 ;; (load  "general.el")        ;; general settings
 ;; (load  "dev.el")            ;; common dev tools
 ;; (load  "dev-clojure.el")    ;; clojure settings
@@ -72,9 +75,3 @@
 ;; (load  "productivity.el")   ;; org-mode and productivity tools
 ;; (loadx "emacs-custom.el")   ;; load emacs customizations
 ;; (loadx "post-init.el")      ;; load custom post configuration if present
-
-
-
-
-
-

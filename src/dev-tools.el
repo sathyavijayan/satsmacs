@@ -145,7 +145,6 @@
 ;;                     ----==| Y A S N I P P E T |==----                      ;;
 ;;                                                                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package yasnippet                  ; Snippets
   :config
   (setq
@@ -191,3 +190,107 @@
   (setq terraform-indent-level 2)
   :bind (:map terraform-mode-map
               ("C-c j" . helm-imenu)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                      ----==| G R A P H V I Z |==----                       ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package graphviz-dot-mode
+  :ensure t
+  :config
+  (setq graphviz-dot-indent-width 2)
+  (setq graphviz-dot-view-edit-command nil)
+  (setq graphviz-dot-view-command "dot -Tpng %s")
+  (setq graphviz-dot-save-before-view t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;          ----==| W E B - S E Q U E N C E - D I A G R A M |==----           ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;
+;; Installing WSD-mode
+;;
+(use-package wsd-mode
+  :init
+  (setq wsd-style "roundgreen")
+  (setq wsd-style-altern "napkin")
+  :bind (:map wsd-mode-map
+              ("C-c C-a" . #'wsd-show-diagram-inline-alternative)))
+
+(defun wsd-show-diagram-inline-alternative ()
+  (interactive)
+  (let*
+      ((wsd-style-temp wsd-style))
+    (setq wsd-style wsd-style-altern)
+    (wsd-show-diagram-inline)
+    (setq wsd-style wsd-style-temp)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                    ----==| C A R B O N - N O W |==----                     ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package carbon-now-sh
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                   ----==| G O O G L E - T H I S |==----                    ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package google-this
+  :init
+  (setq google-this-keybind (kbd "s-g"))
+  (google-this-mode 1))
+
+;; ------------------------------------------------------------
+;; Code boxes
+;; ------------------------------------------------------------
+(defun -pad-center (str len char)
+  (store-substring (make-string len char) (/ (- len (length str)) 2) str))
+
+(defun -trim-string (string)
+  "Remove white spaces in beginning and ending of STRING.
+White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
+  (replace-regexp-in-string "\\`[ \t\n]*" "" (replace-regexp-in-string "[ \t\n]*\\'" "" string)))
+
+(defun comment-box (title)
+  (let* ((size 80)
+         (norm-title (upcase
+                      (-trim-string
+                       (replace-regexp-in-string "\\(.\\)" "\\1 " title))))
+         (decor-title (concat "----==| " norm-title " |==----")))
+    (cl-flet ((str-repeat (size char) (make-string size (string-to-char char))))
+      (concat "\n"
+              (str-repeat 80 ";") "\n"
+              ";;" (str-repeat (- size 4) " ") ";;\n"
+              ";;" (-pad-center decor-title (- size 4) ? ) ";;\n"
+              ";;" (str-repeat (- size 4) " ") ";;\n"
+              (str-repeat 80 ";") "\n"))))
+
+
+(defun bb-comment-box ()
+  "Convert word at point (or selected region) to code box"
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'line)))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert (comment-box text)))))
+
+(global-set-key (kbd "s-b") 'bb-comment-box)
+
+;;
+;; delete space but one like emacs-live
+;;
+(defun live-delete-whitespace-except-one ()
+  (interactive)
+  (just-one-space -1))
+(global-set-key (kbd "M-SPC ") 'live-delete-whitespace-except-one)
