@@ -10,12 +10,12 @@
   :bind (("C-x g"   . magit-status)
          ("C-x M-g" . magit-dispatch)))
 ;; manage PRs
-(use-package forge
-  :after (magit))
+;; (use-package forge
+;;   :after (magit))
 
 (use-package git-timemachine)
 
-(use-package github-review)
+;;(use-package github-review)
 
 
 (defun magit-open-repo ()
