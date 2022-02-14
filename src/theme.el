@@ -1,5 +1,5 @@
 (setq satsmacs/default-font "Victor Mono")
-(setq satsmacs/default-font-size 160)
+(setq satsmacs/default-font-size 170)
 
 
 (setq inhibit-startup-message t)
@@ -13,11 +13,6 @@
 ;; disable visible bell
 (setq visible-bell nil)
 
-;; set preferref font
-(set-face-attribute 'default nil
-        :font   satsmacs/default-font
-        :height satsmacs/default-font-size
-        :weight 'bold)
 
 ;; modeline indicators
 (line-number-mode t)
@@ -58,3 +53,15 @@
 
 (use-package flucui-themes
   :init (setup-flucui-theme))
+
+;; set preferred font
+(defun setup-fonts ()
+  (set-face-attribute 'default nil :font satsmacs/default-font)
+  (set-face-attribute 'default nil :height satsmacs/default-font-size)
+  (set-face-attribute 'default nil :weight 'bold))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (setup-fonts)))
+  (setup-fonts))

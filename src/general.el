@@ -14,10 +14,18 @@
 (setq large-file-warning-threshold 50000000)
 
 ;; expand to full screeen
-(when (member initial-window-system '(x w32 ns))
-  (toggle-frame-maximized)
-  ;;(toggle-frame-fullscreen)
-  )
+;; (when (member initial-window-system '(x w32 ns))
+;;   (toggle-frame-maximized)
+;;   ;;(toggle-frame-fullscreen)
+;;   )
+
+;;
+;; start daemon server
+;;
+;; Start server and set directory
+(setq server-socket-dir (format "/tmp/emacs%d" (user-uid)))
+(server-start)
+
 
 ;; replace buffer-menu with ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
@@ -62,12 +70,6 @@
 
 (global-set-key "\C-co" 'switch-to-minibuffer) ;; Bind to `C-c o'
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                           ----==| I V Y |==----                            ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;
 ;; helper
 ;;
@@ -108,7 +110,7 @@
   (ivy-rich-mode 1)
   :config
   (setq ivy-re-builders-alist
-	'((t . ivy--regex-plus))))
+        '((t . ivy--regex-plus))))
 
 
 (use-package helpful
@@ -143,11 +145,7 @@
 (global-set-key [M-s-down]  'windmove-down)
 (setq windmove-wrap-around t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                       ----==| P R O D I G Y |==----                        ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package prodigy
   :init
   (progn
@@ -159,12 +157,6 @@
     ;; set key binding
     (global-set-key (kbd "C-x p") 'prodigy)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                   ----==| W I N D O W   M G M T |==----                    ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;
 ;; Allows to fix a window in place so that it is not closed/removed
 ;; until you explicitly ask for it.
@@ -175,11 +167,6 @@
 ;;
 (load "sticky-windows.el")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                       ----==| C O M P A N Y |==----                        ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auto completion
 (use-package company
   :ensure t
@@ -194,11 +181,6 @@
   (setq company-tooltip-flip-when-above t)
   (global-company-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                     ----==| B O O K M A R K S |==----                      ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package bm
   :init
   (setq
@@ -224,13 +206,6 @@
   (add-hook 'find-file-hooks   #'bm-buffer-restore)
   (add-hook 'after-revert-hook #'bm-buffer-restore))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                          ----==| D I F F |==----                           ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;
 ;; ediff - don't start another frame
 ;;
@@ -244,12 +219,6 @@
 ;; ztree install (directory diff)
 ;;
 (use-package ztree)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                                            ;;
-;;                   ----==| S P E L L - C H E C K |==----                    ;;
-;;                                                                            ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;
 ;; Apparently this is part of Emacs default so no need to install it.
