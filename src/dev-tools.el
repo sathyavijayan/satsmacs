@@ -102,8 +102,8 @@
 
 (define-key projectile-mode-map [remap projectile-ag] #'helm-projectile-ag)
 (def-projectile-commander-method ?A
-    "Find ag on project."
-    (call-interactively 'helm-projectile-ag))
+                                 "Find ag on project."
+                                 (call-interactively 'helm-projectile-ag))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
@@ -177,7 +177,7 @@
   :config
   (add-to-list 'company-backends 'company-restclient)
   (setq auto-mode-alist
-      (append '(("\\.rest\\'" . restclient-mode)) auto-mode-alist)))
+        (append '(("\\.rest\\'" . restclient-mode)) auto-mode-alist)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;

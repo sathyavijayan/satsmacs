@@ -63,6 +63,8 @@
               ("M-:"   . satsmacs/cider-eval-last-sexp-in-repl))
   :config
   (setq nrepl-log-messages t
+        cider-show-error-buffer nil
+        cider-auto-jump-to-error 'never
         cider-repl-display-in-current-window nil
         cider-repl-pop-to-buffer-on-connect nil
         cider-repl-use-clojure-font-lock t
@@ -225,12 +227,12 @@
                                                (match-end 1) "∨")
                                clojure-font-locking-ligatures-face))))))
 
-(eval-after-load 'clojure-mode
-  '(font-lock-add-keywords
-    'clojure-mode `(("(\\(for\\)[[:blank:]\n]"
-                     (1 (progn (compose-region (match-beginning 1)
-                                               (match-end 1) "∀")
-                               clojure-font-locking-ligatures-face))))))
+;; (eval-after-load 'clojure-mode
+;;   '(font-lock-add-keywords
+;;     'clojure-mode `(("(\\(for\\)[[:blank:]\n]"
+;;                      (1 (progn (compose-region (match-beginning 1)
+;;                                                (match-end 1) "∀")
+;;                                clojure-font-locking-ligatures-face))))))
 
 ;; u/log, mu/log, u/log*, mu/log*
 (eval-after-load 'clojure-mode

@@ -170,3 +170,20 @@
   (global-set-key (kbd "s-j") 'avy-goto-word-or-subword-1)
   (global-set-key (kbd "s-'") 'avy-goto-char)
   (global-set-key (kbd "s-w") 'ace-window))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                          ----==| Z O O M |==----                           ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun window-toggle-zoom ()
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register 'ZZ 't)
+    (progn
+      (frameset-to-register 'ZZ)
+      (delete-other-windows))))
+
+(key-chord-define-global "ZZ" 'window-toggle-zoom)
+(global-set-key (kbd "s-<return>") 'window-toggle-zoom)
