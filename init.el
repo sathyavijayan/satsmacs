@@ -32,6 +32,25 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                   ----==| S T R A I G H T . E L |==----                    ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+
 ;; Sats: initial folder structure is the same as lambdamacs, as it
 ;; seems to make sense. Will change as I improve this setup.
 ;; src/
@@ -68,10 +87,12 @@
 (load    "dev-tools.el")         ;; generic dev tools that apply to
                                  ;; all languages/platforms.
 (load    "clojure.el")           ;; Clojure ! Yeah !
-;; (load  "general.el")        ;; general settings
+(load    "web.el")        ;; web settings
 ;; (load  "dev.el")            ;; common dev tools
 ;; (load  "dev-clojure.el")    ;; clojure settings
 ;; (load  "dev-java.el")       ;; settings for java development
 ;; (load  "productivity.el")   ;; org-mode and productivity tools
 ;; (loadx "emacs-custom.el")   ;; load emacs customizations
 ;; (loadx "post-init.el")      ;; load custom post configuration if present
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
