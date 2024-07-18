@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;     ----==| G E N E R A L   D E V E L O P M E N T   T O O L S |==----      ;;
 ;;                                                                            ;;
@@ -105,6 +105,75 @@
                                  "Find ag on project."
                                  (call-interactively 'helm-projectile-ag))
 
+;;
+;; Better bullets
+;;
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+
+(setq org-todo-keywords
+    '((sequence "TODO(t)" "DOING(d)" "|" "DONE(f)")))
+
+;;
+;; Autogenerate html on-save for org-mode
+;;
+(defun org-autogenerate-html-on-save ()
+  (interactive)
+  (if (memq 'org-html-export-to-html after-save-hook)
+      (progn
+        (remove-hook 'after-save-hook 'org-html-export-to-html t)
+        (message "Disabled org html export on save for current buffer..."))
+    (add-hook 'after-save-hook 'org-html-export-to-html nil t)
+    (message "Enabled org html export on save for current buffer...")))
+
+(if (file-exists-p "~/org")
+    (setq org-agenda-files (directory-files "~/org" t ".*\.org$")))
+
+(setq org-todo-keywords
+    '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")))
+
+
+(advice-add 'org-deadline       :after (lambda (&rest _) (org-save-all-org-buffers)))
+(advice-add 'org-schedule       :after (lambda (&rest _) (org-save-all-org-buffers)))
+(advice-add 'org-store-log-note :after (lambda (&rest _) (org-save-all-org-buffers)))
+(advice-add 'org-todo           :after (lambda (&rest _) (org-save-all-org-buffers)))
+
+(define-key global-map (kbd "C-c a") 'org-agenda)
+(define-key global-map (kbd "C-c c") 'org-capture)
+
+(setq org-export-coding-system 'utf-8)
+(setq org-default-notes-file "~/org/personal.org")
+(setq org-directory "~/org")
+
+(setq org-capture-templates
+      '(("t" "Generic TODO item (scheduled)"
+         entry
+         (file org-default-notes-file)
+         "* TODO %? \n  SCHEDULED: %^t\n")
+
+        ("T" "Generic TODO item (scheduled)"
+         entry
+         (file org-default-notes-file)
+         "* TODO (%^{SIZE[0-9]|0}) %? %^g\n  SCHEDULED: %^t\n  %i")
+
+        ("C" "Canoo TODO item (scheduled)"
+         entry
+         (file "~/org/canoo.org")
+         "* TODO %? \n  SCHEDULED: %^t\n")
+
+        ("d" "Deadline)"
+         entry
+         (file org-default-notes-file)
+         "* TODO (%^{SIZE[0-9]|0}) %? %^g\n  DEADLINE: %^t\n  %i")
+
+        ("l" "Linked TODO item"
+         entry
+         (file org-default-notes-file)
+         "* TODO (%^{SIZE[0-9]|0}) %? %^g\n  SCHEDULED: %^t\n  %i\n  %a")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                      ----==| M A R K D O W N |==----                       ;;
@@ -179,6 +248,15 @@
   (setq auto-mode-alist
         (append '(("\\.rest\\'" . restclient-mode)) auto-mode-alist)))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                       ----==| G R A P H Q L |==----                        ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package request)
+(use-package graphql-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;                     ----==| T E R R A F O R M |==----                      ;;
@@ -228,6 +306,73 @@
     (setq wsd-style wsd-style-altern)
     (wsd-show-diagram-inline)
     (setq wsd-style wsd-style-temp)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                       ----==| M E R M A I D |==----                        ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package ob-mermaid
+  :init
+  (setq ob-mermaid-cli-path "/Users/sats/.nvm/versions/node/v17.6.0/bin/mmdc"))
+
+(use-package ob-ipython)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((mermaid . t)
+   (clojure . t)
+   (shell .t)
+   (scheme . t)
+   ;; Python & Jupyter
+   (python . t)
+   (ipython . t)
+   (jupyter . t)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                  ----==| O R G   S E T T I N G S |==----                   ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq org-src-fontify-natively t)
+
+;; Hack to support syntax highlighing
+;;
+;; taken from: https://emacs.stackexchange.com/a/9838
+(defun rasmus/org-html-wrap-blocks-in-code (src backend info)
+  "Wrap a source block in <pre><code class=\"lang\">.</code></pre>"
+  (when (org-export-derived-backend-p backend 'html)
+    (replace-regexp-in-string
+     "\\(</pre>\\)" "</code>\n\\1"
+     (replace-regexp-in-string "<pre class=\"src src-\\([^\"]*?\\)\">"
+                               "<pre class=\"src src-\\1\">\n<code class=\"\\1\">\n" src))))
+
+;; (add-to-list 'org-export-filter-src-block-functions
+;;              'rasmus/org-html-wrap-blocks-in-code)
+(setq org-export-filter-src-block-functions '(rasmus/org-html-wrap-blocks-in-code))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;              ----==| O R G   H T M L   E X P O R T S |==----               ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq org-html-head-include-default-style nil)
+(setq org-html-head-include-scripts nil)
+(setq org-export-with-section-numbers nil)
+(setq org-html-head "
+<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawcdn.githack.com/BrunoBonacci/org-doc/master/assets/GTD.css\" />
+<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/github.min.css\">
+
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/clojure.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/clojure-repl.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/java.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/bash.min.js\"></script>
+<script>hljs.highlightAll();</script>")
+(setq org-link-file-path-type "relative")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;

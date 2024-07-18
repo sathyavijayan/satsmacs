@@ -230,10 +230,15 @@
 (flyspell-mode +1)
 
 (use-package flycheck
+  :diminish flycheck-mode
   :init
   (setq flycheck-temp-prefix (expand-file-name "flycheck" temporary-file-directory))
   :config
-  (add-hook 'after-init-hook #'global-flycheck-mode))
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (setq flycheck-display-errors-function nil
+        flycheck-erlang-include-path '("../include")
+        flycheck-erlang-library-path '()
+        flycheck-check-syntax-automatically '(save)))
 
 
 ;; FIXME - Helm dev has stalled - Haven't made a decision on whether I

@@ -1,5 +1,13 @@
 auto-save-list/
 
+games/
+request/
+.mc-lists.el
+.org-id-locations
+*.dat
+tramp
+bookmarks
+edts/
 packages/
 org/
 elpa/
@@ -14,3 +22,5 @@ projectile-bookmarks.eld
 /.lsp-session-v1
 /forge-database.sqlite
 /*.cache
+
+straight/

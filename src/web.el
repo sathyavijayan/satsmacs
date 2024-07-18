@@ -9,7 +9,9 @@
          ("\\.djhtml\\'" . web-mode)
          ("\\.html?\\'" . web-mode)
          ("\\.js\\'" . web-mode)
-         ("\\.jsx?$" . web-mode))
+         ("\\.jsx?$" . web-mode)
+         ("\\.ts?$" . web-mode)
+         ("\\.tsx?$" . web-mode))
   :config
   (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
         web-mode-markup-indent-offset 2
@@ -29,3 +31,13 @@
   :init
   (progn
     (flycheck-add-mode 'javascript-eslint 'web-mode)))
+
+(use-package prettier-js
+  :ensure t
+  :config
+  (add-hook 'web-mode-hook
+            #'(lambda ()
+                (enable-minor-mode
+                 '("\\.jsx?\\'" . prettier-js-mode)
+                 )))
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode))

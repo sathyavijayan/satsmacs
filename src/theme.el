@@ -1,4 +1,4 @@
-(setq satsmacs/default-font "Victor Mono")
+(setq satsmacs/default-font "VictorMono NFP")
 (setq satsmacs/default-font-size 170)
 
 
@@ -38,17 +38,21 @@
 (defun switch-to-dark-mode ()
   (interactive)
   (message "And miles to go before YOU sleep ! (-_-)zzz")
+  (setup-fonts)
   (load-theme 'flucui-dark))
 
 (defun switch-to-light-mode ()
   (interactive)
   (message "Rise and shine ! (^_^)/")
+  (setup-fonts)
   (load-theme 'flucui-light))
 
+(use-package nord-theme)
 
 (defun switch-to-experimental-theme ()
   (interactive)
   (message "What is life without experimentation !")
+  (setup-exp-fonts)
   (load-theme 'nord))
 
 (defun setup-flucui-theme ()
@@ -68,10 +72,9 @@
 
 ;; set experimental font
 (defun setup-exp-fonts ()
-  (set-face-attribute 'default nil :font "Iosevka")
-  (set-face-attribute 'default nil :height satsmacs/default-font-size)
+  (set-face-attribute 'default nil :font "BigBlueTerm437 Nerd Font")
+  (set-face-attribute 'default nil :height 200)
   (set-face-attribute 'default nil :weight 'bold))
-
 
 (if (daemonp)
     (add-hook 'after-make-frame-functions

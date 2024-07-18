@@ -15,6 +15,7 @@
       '(("melpa-stable" . "https://stable.melpa.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
         ("org"   . "https://orgmode.org/elpa/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
         ("elpa"  . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
@@ -72,6 +73,10 @@
   (if (file-exists-p (expand-file-name file satsmacs-config-dir))
       (load-file (expand-file-name file satsmacs-config-dir))))
 
+
+(setq native-comp-deferred-compilation-deny-list '(".*jupyter.*" ".*zmq.*"))
+(setq  native-comp-jit-compilation-deny-list '(".*jupyter.*" ".*zmq.*"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                            ;;
 ;;           ----==| L O A D   C O N F I G U R A T I O N S |==----            ;;
@@ -87,7 +92,11 @@
 (load    "dev-tools.el")         ;; generic dev tools that apply to
                                  ;; all languages/platforms.
 (load    "clojure.el")           ;; Clojure ! Yeah !
-(load    "web.el")        ;; web settings
+(load    "web.el")               ;; web settings
+(load    "erl.el")               ;; erlang settings !
+(load    "clockify.el")          ;; custom time reporting !
+(load    "nano-org-wip.el")      ;; some beautification of org mode
+(load    "py.el")                ;; Nagin !
 ;; (load  "dev.el")            ;; common dev tools
 ;; (load  "dev-clojure.el")    ;; clojure settings
 ;; (load  "dev-java.el")       ;; settings for java development

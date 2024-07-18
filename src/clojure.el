@@ -27,7 +27,10 @@
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'eldoc-mode)
   :config
-  (setq clojure-indent-style 'always-indent))
+  (setq clojure-indent-style 'always-indent)
+  :bind
+  (("<prior>" . 'paredit-backward)
+   ("<next>" . 'paredit-forward)))
 
 (defun satsmacs/cider-eval-last-sexp-in-repl ()
   (interactive)
