@@ -266,7 +266,7 @@
 (key-chord-define-global "PP" 'projectile-switch-project)
 
 
-;; Maple minbuffer to get a cool minibuffer popup, so i dont have to look down everytime
+;; Ivy posframe to position minibuffer in a better place.
 (use-package ivy-posframe
   :init
   (ivy-posframe-mode 1)
