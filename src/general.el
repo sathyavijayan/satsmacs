@@ -4,7 +4,9 @@
 
 (setq custom-safe-themes t)
 
-(setq satsmacs-save-dir   (expand-file-name satsmacs/save-place user-emacs-directory))
+(setq satsmacs-save-dir
+      (expand-file-name satsmacs/save-place
+                        user-emacs-directory))
 
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 20MB of allocated data (the default is on every 0.76MB)
@@ -262,3 +264,15 @@
 
 (key-chord-define-global "FF" 'projectile-find-file)
 (key-chord-define-global "PP" 'projectile-switch-project)
+
+
+;; Maple minbuffer to get a cool minibuffer popup, so i dont have to look down everytime
+(use-package ivy-posframe
+  :init
+  (ivy-posframe-mode 1)
+  :config
+  (setq ivy-posframe-display-functions-alist
+        '((t . ivy-posframe-display-at-frame-center)))
+  (setq ivy-posframe-parameters
+        '((left-fringe . 8)
+          (right-fringe . 8))))

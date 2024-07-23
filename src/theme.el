@@ -1,5 +1,5 @@
 (setq satsmacs/default-font "VictorMono NFP")
-(setq satsmacs/default-font-size 170)
+(setq satsmacs/default-font-size 190)
 
 
 (setq inhibit-startup-message t)
@@ -47,13 +47,18 @@
   (setup-fonts)
   (load-theme 'flucui-light))
 
-(use-package nord-theme)
+;; (use-package nord-theme)
+
+(use-package stimmung-themes
+  ;; :straight (stimmung-themes :host github :repo "motform/stimmung-themes") ; if you are a straight shooter
+  :demand t
+  :ensure t) ; or (stimmung-themes-load-dark)
 
 (defun switch-to-experimental-theme ()
   (interactive)
   (message "What is life without experimentation !")
   (setup-exp-fonts)
-  (load-theme 'nord))
+  (stimmung-themes-load-light))
 
 (defun setup-flucui-theme ()
   (load-theme 'flucui-light)
@@ -66,15 +71,15 @@
 
 ;; set preferred font
 (defun setup-fonts ()
-  (set-face-attribute 'default nil :font satsmacs/default-font)
-  (set-face-attribute 'default nil :height satsmacs/default-font-size)
-  (set-face-attribute 'default nil :weight 'bold))
+  (set-face-attribute 'default        nil :font satsmacs/default-font :height satsmacs/default-font-size  :weight 'medium)
+  (set-face-attribute 'fixed-pitch    nil :font satsmacs/default-font  :height satsmacs/default-font-size  :weight 'medium)
+  (set-face-attribute 'variable-pitch nil :font satsmacs/default-font  :height satsmacs/default-font-size  :weight 'normal))
 
 ;; set experimental font
 (defun setup-exp-fonts ()
-  (set-face-attribute 'default nil :font "BigBlueTerm437 Nerd Font")
-  (set-face-attribute 'default nil :height 200)
-  (set-face-attribute 'default nil :weight 'bold))
+  (set-face-attribute 'default        nil :font  satsmacs/default-font  :weight 'medium)
+  (set-face-attribute 'fixed-pitch    nil :font satsmacs/default-font   :weight 'medium)
+  (set-face-attribute 'variable-pitch nil :font satsmacs/default-font   :weight 'normal))
 
 (if (daemonp)
     (add-hook 'after-make-frame-functions
