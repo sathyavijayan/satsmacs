@@ -272,7 +272,10 @@
   (ivy-posframe-mode 1)
   :config
   (setq ivy-posframe-display-functions-alist
-        '((t . ivy-posframe-display-at-frame-center)))
+        '((complete-symbol . ivy-posframe-display-at-point)
+          (completion-at-point . ivy-posframe-display-at-point)
+          (helm-show-kill-ring . ivy-posframe-display-at-frame-center)
+          (t . ivy-posframe-display-at-frame-center)))
   (setq ivy-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8))))

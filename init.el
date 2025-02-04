@@ -97,6 +97,7 @@
 (load    "clockify.el")          ;; custom time reporting !
 (load    "nano-org-wip.el")      ;; some beautification of org mode
 (load    "py.el")                ;; Nagin !
+(load    "llm.el")               ;; llm tools !
 ;; (load  "dev.el")            ;; common dev tools
 ;; (load  "dev-clojure.el")    ;; clojure settings
 ;; (load  "dev-java.el")       ;; settings for java development
@@ -105,3 +106,4 @@
 ;; (loadx "post-init.el")      ;; load custom post configuration if present
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+(put 'magit-edit-line-commit 'disabled nil)

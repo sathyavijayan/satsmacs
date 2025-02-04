@@ -6,7 +6,10 @@
 ;;
 ;; Git and Github packages
 ;;
+(use-package transient)
+
 (use-package magit
+  :after transient
   :bind (("C-x g"   . magit-status)
          ("C-x M-g" . magit-dispatch)))
 ;; manage PRs
@@ -318,16 +321,18 @@
 
 (use-package ob-ipython)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((mermaid . t)
-   (clojure . t)
-   (shell .t)
-   (scheme . t)
-   ;; Python & Jupyter
-   (python . t)
-   (ipython . t)
-   (jupyter . t)))
+;; FIXME: this is causing issues with emacs 31
+;; emacs 31 Shortdoc f function 'f-older-p': bad keyword ':noeval'
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((mermaid . t)
+;;    (clojure . t)
+;;    (shell .t)
+;;    (scheme . t)
+;;    ;; Python & Jupyter
+;;    (python . t)
+;;    (ipython . t)
+;;    (jupyter . t)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -439,3 +444,21 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   (interactive)
   (just-one-space -1))
 (global-set-key (kbd "M-SPC ") 'live-delete-whitespace-except-one)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                            ;;
+;;                   ----==| I N D E N T   B A R S |==----                    ;;
+;;                                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq indent-bars-prefer-character t)
+
+(use-package indent-bars
+  :hook ((python-mode yaml-mode web-mode) . indent-bars-mode)
+  :config
+  (setq
+   indent-bars-color '(highlight :face-bg t :blend 0.3)
+   indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 0.4)
+   indent-bars-unspecified-fg-color "white"
+   indent-bars-unspecified-bg-color "black")) ; or whichever modes you prefer

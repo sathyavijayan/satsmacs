@@ -1,5 +1,5 @@
 (setq satsmacs/default-font "VictorMono NFP")
-(setq satsmacs/default-font-size 190)
+(setq satsmacs/default-font-size 170)
 
 
 (setq inhibit-startup-message t)
